@@ -23,7 +23,8 @@ import com.example.courseworkcomp1786.databinding.ActivityMainBinding;
 import java.time.LocalDate;
 
 public class MainActivity extends AppCompatActivity {
-
+    //change1
+    //testcomit1
     ActivityMainBinding binding;
 
     @Override
