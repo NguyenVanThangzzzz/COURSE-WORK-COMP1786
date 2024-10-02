@@ -1,60 +1,48 @@
 package com.example.courseworkcomp1786;
 
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AddFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Calendar;
+
 public class AddFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private TextView dobControl;
+    private TextView timeControl;
+    private EditText editTextCapacity;
+    private EditText editTextDuration;
+    private EditText editTextPricePerClass;
+    private EditText editTextDescription;
+    private RadioGroup radioGroupClassType;
+    private Button addButton;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
 
     public AddFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AddFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AddFragment newInstance(String param1, String param2) {
-        AddFragment fragment = new AddFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -63,17 +51,74 @@ public class AddFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add, container, false);
 
-        // Tìm kiếm TextView dobControl từ layout
-        TextView dobControl = view.findViewById(R.id.dob_control);
+        // Liên kết các thành phần giao diện
+        dobControl = view.findViewById(R.id.dob_control);
+        timeControl = view.findViewById(R.id.time_control);
+        editTextCapacity = view.findViewById(R.id.editTextCapacity);
+        editTextDuration = view.findViewById(R.id.editTextDuration);
+        editTextPricePerClass = view.findViewById(R.id.editTextPricePerClass);
+        editTextDescription = view.findViewById(R.id.editTextDescription);
+        radioGroupClassType = view.findViewById(R.id.radioGroupClassType);
+        addButton = view.findViewById(R.id.add_button);
 
-        // Gán sự kiện click cho dobControl
+        // Khởi tạo Firebase với URL tùy chỉnh
+        firebaseDatabase = FirebaseDatabase.getInstance("https://course-work-comp1786-f7483-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        databaseReference = firebaseDatabase.getReference("courses"); // Đường dẫn tới "courses"
+
+        // Sự kiện click cho dobControl
         dobControl.setOnClickListener(v -> {
-            // Sử dụng DatePickerFragment vừa tách ra để hiển thị DatePicker
             DialogFragment datePicker = new DatePickerFragment(dobControl);
             datePicker.show(getParentFragmentManager(), "datePicker");
         });
 
+        // Sự kiện click cho timeControl
+        timeControl.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+
+            TimePickerDialog timePicker = new TimePickerDialog(getContext(),
+                    (view1, hourOfDay, minuteOfHour) -> {
+                        timeControl.setText(String.format("%02d:%02d", hourOfDay, minuteOfHour));
+                    }, hour, minute, true);
+            timePicker.show();
+        });
+
+        // Sự kiện click cho nút Add
+        addButton.setOnClickListener(v -> addNewCourse());
 
         return view;
+    }
+
+    private void addNewCourse() {
+        // Lấy dữ liệu từ các EditText và các thành phần khác
+        String dayOfWeek = dobControl.getText().toString().trim();
+        String timeOfCourse = timeControl.getText().toString().trim();
+        String capacity = editTextCapacity.getText().toString().trim();
+        String duration = editTextDuration.getText().toString().trim();
+        String pricePerClass = editTextPricePerClass.getText().toString().trim();
+        String description = editTextDescription.getText().toString().trim();
+
+        // Lấy loại lớp học từ RadioGroup
+        int selectedTypeId = radioGroupClassType.getCheckedRadioButtonId();
+        RadioButton selectedRadioButton = getView().findViewById(selectedTypeId);
+        String classType = selectedRadioButton != null ? selectedRadioButton.getText().toString() : "";
+
+        // Kiểm tra nếu một số trường còn trống
+        if (dayOfWeek.isEmpty() || timeOfCourse.isEmpty() || capacity.isEmpty() || duration.isEmpty() || pricePerClass.isEmpty() || description.isEmpty() || classType.isEmpty()) {
+            Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Tạo đối tượng Course để thêm vào Firebase
+        Course newCourse = new Course(dayOfWeek, timeOfCourse, capacity, duration, pricePerClass, classType, description);
+
+        // Thêm khóa học vào Firebase Realtime Database
+        databaseReference.push().setValue(newCourse)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(getContext(), "Khóa học đã được thêm thành công!", Toast.LENGTH_SHORT).show();
+
+                })
+                .addOnFailureListener(e -> Toast.makeText(getContext(), "Không thể thêm khóa học: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }
