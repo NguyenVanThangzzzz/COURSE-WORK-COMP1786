@@ -2,91 +2,104 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="16dp"
     android:background="@android:color/white"
     android:layout_marginBottom="8dp"
     android:elevation="4dp">
 
-    <!-- First Column: Course Information -->
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textViewClassType"
-            android:layout_width="wrap_content"
+        <!-- First Column: Course Information -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Class Type"
-            android:textSize="18sp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewClassType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Class Type"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewDayOfWeek"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Day of Week"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textViewTimeOfCourse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time of Course"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textViewCapacity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Capacity"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textViewPricePerClass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price per Class"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- Second Column: Add Class Label -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Class Name"
+            android:gravity="center"
+            android:textSize="16sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textViewDayOfWeek"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Day of Week"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/textViewTimeOfCourse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Time of Course"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/textViewCapacity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Capacity"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/textViewPricePerClass"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Price per Class"
-            android:textSize="16sp" />
     </LinearLayout>
 
-    <!-- Second Column: Add Class Label -->
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Add Class"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <!-- Third Column: Buttons -->
+    <!-- Third Row: Buttons at the bottom -->
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="16dp">
 
         <Button
             android:id="@+id/buttonAddClass"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Add Class" />
+            android:layout_weight="1.2"
+            android:text="Add Class"
+            android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/buttonEdit"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Edit" />
+            android:layout_weight="1"
+            android:text="Edit"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp" />
 
         <Button
             android:id="@+id/buttonDelete"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Delete" />
+            android:layout_weight="1"
+            android:text="Delete"
+            android:layout_marginStart="8dp" />
     </LinearLayout>
 
 </LinearLayout>
