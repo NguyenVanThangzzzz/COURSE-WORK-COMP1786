@@ -46,9 +46,17 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         });
 
         holder.buttonEdit.setOnClickListener(v -> {
+            // Hiển thị thông báo khi nút Edit được nhấn
             Toast.makeText(v.getContext(), "Edit clicked for " + course.getClassType(), Toast.LENGTH_SHORT).show();
-            // Handle Edit functionality
+
+            // Chuyển đến EditCourseFragment với ID của khóa học
+            EditCourseFragment editCourseFragment = EditCourseFragment.newInstance(course.getId());
+
+            // Thay thế fragment hiện tại bằng EditCourseFragment
+            mainActivity.replaceFragment(editCourseFragment);
         });
+
+
 
         holder.buttonDelete.setOnClickListener(v -> {
             Toast.makeText(v.getContext(), "Delete clicked for " + course.getClassType(), Toast.LENGTH_SHORT).show();

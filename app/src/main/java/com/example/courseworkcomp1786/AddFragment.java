@@ -110,15 +110,19 @@ public class AddFragment extends Fragment {
             return;
         }
 
+        // Tạo ID cho khóa học (có thể sử dụng UUID hoặc ID từ Firebase)
+        String courseId = databaseReference.push().getKey(); // Tạo ID mới từ Firebase
+
         // Tạo đối tượng Course để thêm vào Firebase
-        Course newCourse = new Course(dayOfWeek, timeOfCourse, capacity, duration, pricePerClass, classType, description);
+        Course newCourse = new Course(courseId, dayOfWeek, timeOfCourse, capacity, duration, pricePerClass, classType, description);
 
         // Thêm khóa học vào Firebase Realtime Database
-        databaseReference.push().setValue(newCourse)
+        databaseReference.child(courseId).setValue(newCourse) // Sử dụng ID tạo được để lưu khóa học
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "Khóa học đã được thêm thành công!", Toast.LENGTH_SHORT).show();
 
                 })
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Không thể thêm khóa học: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
+
 }

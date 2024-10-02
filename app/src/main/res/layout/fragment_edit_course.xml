@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Day of Week Selection -->
+    <TextView
+        android:id="@+id/dob_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Day of Week"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/dob_control"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click here to select the day of the week"
+        android:textColor="@android:color/holo_blue_dark"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginTop="8dp" />
+
+    <!-- Time of Course Selection -->
+    <TextView
+        android:id="@+id/textViewTimeOfCourse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time of Course"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/time_control"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click here to select time"
+        android:textColor="@android:color/holo_blue_dark"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginTop="8dp" />
+
+    <EditText
+        android:id="@+id/editTextCapacity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Số lượng"/>
+
+    <EditText
+        android:id="@+id/editTextDuration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Thời gian"/>
+
+    <EditText
+        android:id="@+id/editTextPricePerClass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Giá mỗi lớp"/>
+
+    <EditText
+        android:id="@+id/editTextDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mô tả"/>
+
+    <RadioGroup
+        android:id="@+id/radioGroupClassType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+
+        <RadioButton
+            android:id="@+id/radioFlowYoga"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Flow Yoga" />
+
+        <RadioButton
+            android:id="@+id/radioAerialYoga"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aerial Yoga" />
+
+        <RadioButton
+            android:id="@+id/radioFamilyYoga"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Family Yoga" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lưu"/>
+
+</LinearLayout>
