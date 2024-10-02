@@ -34,7 +34,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Khởi tạo danh sách khóa học
+
         courseList = new ArrayList<>();
     }
 
@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
         recyclerViewCourses.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Khởi tạo adapter cho RecyclerView
-        courseAdapter = new CourseAdapter(courseList);
+        courseAdapter = new CourseAdapter((MainActivity) getActivity(), courseList); // Thay đổi đây
         recyclerViewCourses.setAdapter(courseAdapter);
 
         // Lấy dữ liệu từ Firebase
@@ -57,6 +57,7 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
+
 
     private void fetchCoursesFromFirebase() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://course-work-comp1786-f7483-default-rtdb.asia-southeast1.firebasedatabase.app/")

@@ -2,7 +2,11 @@ package com.example.courseworkcomp1786;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.service.voice.VoiceInteractionSession;
+import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 
 import androidx.activity.EdgeToEdge;
@@ -30,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -56,12 +62,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void replaceFragment(Fragment fragment){
+    public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout,fragment);
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
+
 
 
 

@@ -1,5 +1,6 @@
 package com.example.courseworkcomp1786;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +11,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
 
     private final List<Course> courseList;
+    private final MainActivity mainActivity; // Thêm tham số này
 
-    public CourseAdapter(List<Course> courseList) {
+    public CourseAdapter(MainActivity mainActivity, List<Course> courseList) {
+        this.mainActivity = mainActivity; // Khởi tạo biến
         this.courseList = courseList;
     }
 
@@ -38,8 +42,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
         // Set click listeners for buttons
         holder.buttonAddClass.setOnClickListener(v -> {
-            Toast.makeText(v.getContext(), "Add Class clicked for " + course.getClassType(), Toast.LENGTH_SHORT).show();
-            // Handle Add Class functionality
+            mainActivity.replaceFragment(new AddClassFragment()); // Điều hướng đến AddClassFragment
         });
 
         holder.buttonEdit.setOnClickListener(v -> {
@@ -81,3 +84,4 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         }
     }
 }
+
