@@ -25,6 +25,7 @@ public class AddClassFragment extends Fragment {
     private TextView editTextDate; // Thay đổi từ EditText sang TextView
     private EditText editTextComments;
     private Button buttonAdd;
+    private Button buttonBack; // Add this line
     private String courseId; // Biến để giữ courseId liên kết với lớp này
 
     public AddClassFragment() {
@@ -41,6 +42,7 @@ public class AddClassFragment extends Fragment {
         editTextDate = view.findViewById(R.id.editTextDate); // Cập nhật biến để là TextView
         editTextComments = view.findViewById(R.id.editTextComments);
         buttonAdd = view.findViewById(R.id.buttonAdd);
+        buttonBack = view.findViewById(R.id.buttonBack); // Add this line
 
         // Set click listener for the date TextView to open DatePickerFragment
         editTextDate.setOnClickListener(v -> showDatePickerDialog());
@@ -51,6 +53,14 @@ public class AddClassFragment extends Fragment {
         }
 
         buttonAdd.setOnClickListener(v -> addClass());
+        
+        // Add this block
+        buttonBack.setOnClickListener(v -> {
+            // Navigate back to the Home screen
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).replaceFragment(new HomeFragment());
+            }
+        });
 
         return view;
     }

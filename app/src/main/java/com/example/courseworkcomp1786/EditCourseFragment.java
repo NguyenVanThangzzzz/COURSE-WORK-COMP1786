@@ -33,6 +33,7 @@ public class EditCourseFragment extends Fragment {
     private EditText editTextDescription;
     private RadioGroup radioGroupClassType;
     private Button saveButton;
+    private Button backButton;
 
     private DatabaseReference databaseReference;
     private String courseId; // ID của khóa học cần chỉnh sửa
@@ -75,9 +76,13 @@ public class EditCourseFragment extends Fragment {
         editTextDescription = view.findViewById(R.id.editTextDescription);
         radioGroupClassType = view.findViewById(R.id.radioGroupClassType);
         saveButton = view.findViewById(R.id.save_button);
+        backButton = view.findViewById(R.id.back_button);
 
         // Thiết lập sự kiện click cho nút lưu
         saveButton.setOnClickListener(v -> updateCourse());
+
+        // Thiết lập sự kiện click cho nút back
+        backButton.setOnClickListener(v -> goBackToHome());
 
         // Thiết lập sự kiện click cho dobControl
         dobControl.setOnClickListener(v -> showDatePicker());
@@ -195,5 +200,10 @@ public class EditCourseFragment extends Fragment {
                     ((MainActivity) getActivity()).replaceFragment(new HomeFragment());
                 })
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Không thể cập nhật khóa học: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+    }
+
+    private void goBackToHome() {
+        // Quay lại trang HomeFragment
+        ((MainActivity) getActivity()).replaceFragment(new HomeFragment());
     }
 }

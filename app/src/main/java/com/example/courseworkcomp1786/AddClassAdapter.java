@@ -33,9 +33,7 @@ public class AddClassAdapter extends RecyclerView.Adapter<AddClassAdapter.AddCla
     @Override
     public void onBindViewHolder(@NonNull AddClassViewHolder holder, int position) {
         AddClass addClass = classList.get(position);
-        holder.textViewTeacher.setText("Teacher: " + addClass.getTeacher());
-        holder.textViewDate.setText("Date: " + addClass.getDate());
-        holder.textViewComments.setText("Comments: " + addClass.getComments());
+        holder.bind(addClass);
     }
 
     @Override
@@ -44,10 +42,10 @@ public class AddClassAdapter extends RecyclerView.Adapter<AddClassAdapter.AddCla
     }
 
     static class AddClassViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewTeacher;
-        TextView textViewDate;
-        TextView textViewComments;
-        Button buttonDeleteClass;
+        private final TextView textViewTeacher;
+        private final TextView textViewDate;
+        private final TextView textViewComments;
+        private final Button buttonDeleteClass;
 
         public AddClassViewHolder(@NonNull View itemView, final OnDeleteClickListener listener) {
             super(itemView);
@@ -57,13 +55,17 @@ public class AddClassAdapter extends RecyclerView.Adapter<AddClassAdapter.AddCla
             buttonDeleteClass = itemView.findViewById(R.id.buttonDeleteClass);
 
             buttonDeleteClass.setOnClickListener(v -> {
-                if (listener != null) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        listener.onDeleteClick(position);
-                    }
+                int position = getBindingAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && listener != null) {
+                    listener.onDeleteClick(position);
                 }
             });
+        }
+
+        public void bind(AddClass addClass) {
+            textViewTeacher.setText("Teacher: " + addClass.getTeacher());
+            textViewDate.setText("Date: " + addClass.getDate());
+            textViewComments.setText("Comments: " + addClass.getComments());
         }
     }
 }
