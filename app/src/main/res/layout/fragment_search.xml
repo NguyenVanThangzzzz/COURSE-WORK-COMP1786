@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".SearchFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search Page"
-        android:textSize="50dp"
-        android:layout_gravity="center" />
+        android:background="@android:drawable/editbox_background"
+        app:iconifiedByDefault="false"
+        app:queryHint="Search courses..."
+        app:searchIcon="@drawable/baseline_search_24" />
 
-</FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewSearchResults"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>
