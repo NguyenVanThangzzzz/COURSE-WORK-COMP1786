@@ -40,9 +40,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         holder.textViewCapacity.setText("Capacity: " + course.getCapacity());
         holder.textViewPricePerClass.setText("Price: " + course.getPricePerClass());
 
-        // Thiết lập AddClassAdapter cho RecyclerView
-        AddClassAdapter addClassAdapter = new AddClassAdapter(course.getAddClasses());
-        holder.recyclerViewAddClasses.setAdapter(addClassAdapter); // Giả sử bạn đã thêm RecyclerView vào item_course.xml
+
 
         // Set click listeners for buttons
         holder.buttonAddClass.setOnClickListener(v -> {
@@ -80,7 +78,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         Button buttonAddClass;
         Button buttonEdit;
         Button buttonDelete;
-        RecyclerView recyclerViewAddClasses; // Thêm RecyclerView cho AddClass
+
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -92,8 +90,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             buttonAddClass = itemView.findViewById(R.id.buttonAddClass);
             buttonEdit = itemView.findViewById(R.id.buttonEdit);
             buttonDelete = itemView.findViewById(R.id.buttonDelete);
-            recyclerViewAddClasses = itemView.findViewById(R.id.recyclerViewAddClasses); // Khởi tạo RecyclerView
-            recyclerViewAddClasses.setNestedScrollingEnabled(false); // Tắt cuộn nested
         }
     }
 }

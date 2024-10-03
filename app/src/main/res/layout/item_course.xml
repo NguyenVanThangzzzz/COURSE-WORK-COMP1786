@@ -50,33 +50,6 @@
             android:text="Price per Class"
             android:textSize="16sp" />
 
-        <!-- Divider Line between Class Type and Class Name -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/black"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp" />
-
-        <!-- Class Name Section -->
-        <TextView
-            android:id="@+id/textViewClassNameLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Class Names"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewAddClasses"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="8dp"
-            android:nestedScrollingEnabled="false" />
-
-
-
         <LinearLayout
             android:id="@+id/classNamesContainer"
             android:layout_width="match_parent"
