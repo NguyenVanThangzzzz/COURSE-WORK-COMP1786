@@ -17,11 +17,10 @@ import java.util.List;
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
 
     private final List<Course> courseList;
-
-    private final MainActivity mainActivity; // Thêm tham số này
+    private final MainActivity mainActivity;
 
     public CourseAdapter(MainActivity mainActivity, List<Course> courseList) {
-        this.mainActivity = mainActivity; // Khởi tạo biến
+        this.mainActivity = mainActivity;
         this.courseList = courseList;
     }
 
@@ -41,6 +40,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         holder.textViewCapacity.setText("Capacity: " + course.getCapacity());
         holder.textViewPricePerClass.setText("Price: " + course.getPricePerClass());
 
+        // Thiết lập AddClassAdapter cho RecyclerView
+        AddClassAdapter addClassAdapter = new AddClassAdapter(course.getAddClasses());
+        holder.recyclerViewAddClasses.setAdapter(addClassAdapter); // Giả sử bạn đã thêm RecyclerView vào item_course.xml
 
         // Set click listeners for buttons
         holder.buttonAddClass.setOnClickListener(v -> {
@@ -49,18 +51,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             Bundle args = new Bundle();
             args.putString("courseId", course.getId()); // Truyền courseId vào Bundle
             addClassFragment.setArguments(args); // Đặt arguments cho AddClassFragment
-
             mainActivity.replaceFragment(addClassFragment); // Điều hướng đến AddClassFragment
         });
 
         holder.buttonEdit.setOnClickListener(v -> {
-            // Hiển thị thông báo khi nút Edit được nhấn
             Toast.makeText(v.getContext(), "Edit clicked for " + course.getClassType(), Toast.LENGTH_SHORT).show();
-
-            // Chuyển đến EditCourseFragment với ID của khóa học
             EditCourseFragment editCourseFragment = EditCourseFragment.newInstance(course.getId());
-
-            // Thay thế fragment hiện tại bằng EditCourseFragment
             mainActivity.replaceFragment(editCourseFragment);
         });
 
@@ -69,7 +65,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             // Handle Delete functionality
         });
     }
-
 
     @Override
     public int getItemCount() {
@@ -85,6 +80,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         Button buttonAddClass;
         Button buttonEdit;
         Button buttonDelete;
+        RecyclerView recyclerViewAddClasses; // Thêm RecyclerView cho AddClass
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -96,7 +92,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             buttonAddClass = itemView.findViewById(R.id.buttonAddClass);
             buttonEdit = itemView.findViewById(R.id.buttonEdit);
             buttonDelete = itemView.findViewById(R.id.buttonDelete);
+            recyclerViewAddClasses = itemView.findViewById(R.id.recyclerViewAddClasses); // Khởi tạo RecyclerView
+            recyclerViewAddClasses.setNestedScrollingEnabled(false); // Tắt cuộn nested
         }
     }
 }
-

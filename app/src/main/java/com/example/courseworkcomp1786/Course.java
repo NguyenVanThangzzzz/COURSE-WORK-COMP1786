@@ -1,5 +1,7 @@
 package com.example.courseworkcomp1786;
 
+import java.util.List;
+
 public class Course {
     private String id; // Thêm trường id
     private String dayOfWeek;
@@ -9,6 +11,8 @@ public class Course {
     private String pricePerClass;
     private String classType;
     private String description;
+
+    private List<AddClass> addClasses;
 
     public Course() {
         // Constructor mặc định
@@ -25,6 +29,15 @@ public class Course {
         this.description = description;
     }
 
+
+
+    public List<AddClass> getAddClasses() {
+        return addClasses;
+    }
+
+    public void setAddClasses(List<AddClass> addClasses) {
+        this.addClasses = addClasses;
+    }
     // Các getter và setter
     public String getId() {
         return id; // Getter cho id
