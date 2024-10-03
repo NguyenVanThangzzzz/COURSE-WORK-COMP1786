@@ -4,9 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,12 +13,13 @@ import com.google.firebase.database.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckClassesFragment extends Fragment {
+public class CheckClassesFragment extends Fragment implements AddClassAdapter.OnDeleteClickListener {
 
     private RecyclerView recyclerView;
     private AddClassAdapter adapter;
     private List<AddClass> classList;
     private String courseId;
+    private DatabaseReference courseRef;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,7 +28,7 @@ public class CheckClassesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewClasses);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         classList = new ArrayList<>();
-        adapter = new AddClassAdapter(classList);
+        adapter = new AddClassAdapter(classList, this);
         recyclerView.setAdapter(adapter);
 
         if (getArguments() != null) {
@@ -41,20 +40,21 @@ public class CheckClassesFragment extends Fragment {
     }
 
     private void loadClasses(String courseId) {
-        DatabaseReference courseRef = FirebaseDatabase.getInstance().getReference("courses").child(courseId);
+        courseRef = FirebaseDatabase.getInstance().getReference("courses").child(courseId);
         courseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 classList.clear();
                 for (DataSnapshot classSnapshot : dataSnapshot.getChildren()) {
-                    // Check if the child is an AddClass object
                     if (classSnapshot.hasChild("teacher") && classSnapshot.hasChild("date") && classSnapshot.hasChild("comments")) {
                         String teacher = classSnapshot.child("teacher").getValue(String.class);
                         String date = classSnapshot.child("date").getValue(String.class);
                         String comments = classSnapshot.child("comments").getValue(String.class);
+                        String classId = classSnapshot.getKey();
 
-                        if (teacher != null && date != null && comments != null) {
+                        if (teacher != null && date != null && comments != null && classId != null) {
                             AddClass addClass = new AddClass(teacher, date, comments, courseId);
+                            addClass.setId(classId);
                             classList.add(addClass);
                         }
                     }
@@ -64,9 +64,24 @@ public class CheckClassesFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle possible errors.
                 Toast.makeText(getContext(), "Failed to load classes: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onDeleteClick(int position) {
+        AddClass classToDelete = classList.get(position);
+        String classId = classToDelete.getId();
+        
+        if (classId != null) {
+            courseRef.child(classId).removeValue().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getContext(), "Class deleted successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Failed to delete class", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

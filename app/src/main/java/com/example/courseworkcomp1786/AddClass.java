@@ -1,6 +1,7 @@
 package com.example.courseworkcomp1786;
 
 public class AddClass {
+    private String id;
     private String teacher;
     private String date;
     private String comments;
@@ -48,5 +49,13 @@ public class AddClass {
 
     public void setCourseId(String courseId) {
         this.courseId = courseId; // Setter cho courseId
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
