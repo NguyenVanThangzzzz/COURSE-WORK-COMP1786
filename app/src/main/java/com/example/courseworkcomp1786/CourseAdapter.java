@@ -17,6 +17,7 @@ import java.util.List;
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
 
     private final List<Course> courseList;
+
     private final MainActivity mainActivity; // Thêm tham số này
 
     public CourseAdapter(MainActivity mainActivity, List<Course> courseList) {
@@ -39,6 +40,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         holder.textViewTimeOfCourse.setText("Time: " + course.getTimeOfCourse());
         holder.textViewCapacity.setText("Capacity: " + course.getCapacity());
         holder.textViewPricePerClass.setText("Price: " + course.getPricePerClass());
+
 
         // Set click listeners for buttons
         holder.buttonAddClass.setOnClickListener(v -> {
