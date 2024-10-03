@@ -4,17 +4,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
 public class AddClassAdapter extends RecyclerView.Adapter<AddClassAdapter.AddClassViewHolder> {
-    private final List<AddClass> addClassList;
 
-    public AddClassAdapter(List<AddClass> addClassList) {
-        this.addClassList = addClassList;
+    private List<AddClass> classList;
+
+    public AddClassAdapter(List<AddClass> classList) {
+        this.classList = classList;
     }
 
     @NonNull
@@ -26,7 +25,7 @@ public class AddClassAdapter extends RecyclerView.Adapter<AddClassAdapter.AddCla
 
     @Override
     public void onBindViewHolder(@NonNull AddClassViewHolder holder, int position) {
-        AddClass addClass = addClassList.get(position);
+        AddClass addClass = classList.get(position);
         holder.textViewTeacher.setText("Teacher: " + addClass.getTeacher());
         holder.textViewDate.setText("Date: " + addClass.getDate());
         holder.textViewComments.setText("Comments: " + addClass.getComments());
@@ -34,7 +33,7 @@ public class AddClassAdapter extends RecyclerView.Adapter<AddClassAdapter.AddCla
 
     @Override
     public int getItemCount() {
-        return addClassList.size();
+        return classList.size();
     }
 
     static class AddClassViewHolder extends RecyclerView.ViewHolder {

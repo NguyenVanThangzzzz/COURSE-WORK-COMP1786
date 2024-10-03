@@ -16,6 +16,9 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AddClassFragment extends Fragment {
 
     private EditText editTextTeacher;
@@ -77,14 +80,18 @@ public class AddClassFragment extends Fragment {
             return;
         }
 
-        // Tạo đối tượng AddClass với thông tin nhập vào và courseId
-        AddClass addClass = new AddClass(teacher, date, comments, courseId);
-
-        // Truy cập vào nút con của courseId mà không tạo thêm nút "addClasses"
+        // Create a new child node for this class
         DatabaseReference courseRef = FirebaseDatabase.getInstance().getReference("courses").child(courseId);
+        DatabaseReference newClassRef = courseRef.push();
 
-        // Thêm dữ liệu AddClass trực tiếp vào khóa học
-        courseRef.push().setValue(addClass).addOnCompleteListener(task -> {
+        // Create a map of the class data
+        Map<String, Object> classData = new HashMap<>();
+        classData.put("teacher", teacher);
+        classData.put("date", date);
+        classData.put("comments", comments);
+
+        // Set the value of the new class node
+        newClassRef.setValue(classData).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(getContext(), "Class added successfully", Toast.LENGTH_SHORT).show();
                 // Optionally, navigate back to the previous fragment or clear input fields
@@ -93,7 +100,4 @@ public class AddClassFragment extends Fragment {
             }
         });
     }
-
-
-
 }

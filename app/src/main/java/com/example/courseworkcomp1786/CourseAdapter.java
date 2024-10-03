@@ -40,8 +40,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         holder.textViewCapacity.setText("Capacity: " + course.getCapacity());
         holder.textViewPricePerClass.setText("Price: " + course.getPricePerClass());
 
-
-
         // Set click listeners for buttons
         holder.buttonAddClass.setOnClickListener(v -> {
             // Tạo AddClassFragment và truyền courseId vào Bundle
@@ -62,6 +60,15 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             Toast.makeText(v.getContext(), "Delete clicked for " + course.getClassType(), Toast.LENGTH_SHORT).show();
             // Handle Delete functionality
         });
+
+        holder.buttonCheckClass.setOnClickListener(v -> {
+            // Tạo CheckClassesFragment và truyền courseId vào Bundle
+            CheckClassesFragment checkClassesFragment = new CheckClassesFragment();
+            Bundle args = new Bundle();
+            args.putString("courseId", course.getId());
+            checkClassesFragment.setArguments(args);
+            mainActivity.replaceFragment(checkClassesFragment);
+        });
     }
 
     @Override
@@ -78,7 +85,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         Button buttonAddClass;
         Button buttonEdit;
         Button buttonDelete;
-
+        Button buttonCheckClass;
 
         public CourseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -90,6 +97,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             buttonAddClass = itemView.findViewById(R.id.buttonAddClass);
             buttonEdit = itemView.findViewById(R.id.buttonEdit);
             buttonDelete = itemView.findViewById(R.id.buttonDelete);
+            buttonCheckClass = itemView.findViewById(R.id.buttonCheckClass);
         }
     }
 }
