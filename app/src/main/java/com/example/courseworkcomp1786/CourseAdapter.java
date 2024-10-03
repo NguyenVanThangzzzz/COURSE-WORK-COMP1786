@@ -42,7 +42,13 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
         // Set click listeners for buttons
         holder.buttonAddClass.setOnClickListener(v -> {
-            mainActivity.replaceFragment(new AddClassFragment()); // Điều hướng đến AddClassFragment
+            // Tạo AddClassFragment và truyền courseId vào Bundle
+            AddClassFragment addClassFragment = new AddClassFragment();
+            Bundle args = new Bundle();
+            args.putString("courseId", course.getId()); // Truyền courseId vào Bundle
+            addClassFragment.setArguments(args); // Đặt arguments cho AddClassFragment
+
+            mainActivity.replaceFragment(addClassFragment); // Điều hướng đến AddClassFragment
         });
 
         holder.buttonEdit.setOnClickListener(v -> {
@@ -56,13 +62,12 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             mainActivity.replaceFragment(editCourseFragment);
         });
 
-
-
         holder.buttonDelete.setOnClickListener(v -> {
             Toast.makeText(v.getContext(), "Delete clicked for " + course.getClassType(), Toast.LENGTH_SHORT).show();
             // Handle Delete functionality
         });
     }
+
 
     @Override
     public int getItemCount() {

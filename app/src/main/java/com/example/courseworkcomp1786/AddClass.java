@@ -4,15 +4,17 @@ public class AddClass {
     private String teacher;
     private String date;
     private String comments;
+    private String courseId; // Khóa ngoại để liên kết với Course
 
     public AddClass() {
         // Cần thiết cho Firebase
     }
 
-    public AddClass(String teacher, String date, String comments) {
+    public AddClass(String teacher, String date, String comments, String courseId) {
         this.teacher = teacher;
         this.date = date;
         this.comments = comments;
+        this.courseId = courseId; // Thêm khóa ngoại courseId
     }
 
     // Getter and Setter methods
@@ -38,5 +40,13 @@ public class AddClass {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public String getCourseId() {
+        return courseId; // Getter cho courseId
+    }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId; // Setter cho courseId
     }
 }
