@@ -68,4 +68,9 @@ public class AddClassAdapter extends RecyclerView.Adapter<AddClassAdapter.AddCla
             textViewComments.setText("Comments: " + addClass.getComments());
         }
     }
+
+    public void updateList(List<AddClass> newList) {
+        classList = newList;
+        notifyDataSetChanged();
+    }
 }

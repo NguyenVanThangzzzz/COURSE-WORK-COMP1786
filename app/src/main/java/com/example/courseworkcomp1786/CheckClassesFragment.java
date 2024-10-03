@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +24,8 @@ public class CheckClassesFragment extends Fragment implements AddClassAdapter.On
     private List<AddClass> classList;
     private String courseId;
     private DatabaseReference courseRef;
+    private EditText searchEditText;
+    private List<AddClass> allClassList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,7 +45,30 @@ public class CheckClassesFragment extends Fragment implements AddClassAdapter.On
         ImageView backButton = view.findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> navigateToHome());
 
+        searchEditText = view.findViewById(R.id.searchEditText);
+        setupSearchListener();
+
         return view;
+    }
+
+    private void setupSearchListener() {
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filterClasses(s.toString());
+            }
+        });
+    }
+
+    private void filterClasses(String query) {
+        List<AddClass> filteredList = SearchClass.searchClasses(allClassList, query);
+        adapter.updateList(filteredList);
     }
 
     private void loadClasses(String courseId) {
@@ -48,7 +76,7 @@ public class CheckClassesFragment extends Fragment implements AddClassAdapter.On
         courseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                classList.clear();
+                allClassList = new ArrayList<>();
                 for (DataSnapshot classSnapshot : dataSnapshot.getChildren()) {
                     if (classSnapshot.hasChild("teacher") && classSnapshot.hasChild("date") && classSnapshot.hasChild("comments")) {
                         String teacher = classSnapshot.child("teacher").getValue(String.class);
@@ -59,11 +87,12 @@ public class CheckClassesFragment extends Fragment implements AddClassAdapter.On
                         if (teacher != null && date != null && comments != null && classId != null) {
                             AddClass addClass = new AddClass(teacher, date, comments, courseId);
                             addClass.setId(classId);
-                            classList.add(addClass);
+                            allClassList.add(addClass);
                         }
                     }
                 }
-                adapter.notifyDataSetChanged();
+                classList = new ArrayList<>(allClassList);
+                adapter.updateList(classList);
             }
 
             @Override
