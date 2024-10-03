@@ -7,9 +7,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.AlertDialog;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +22,13 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     private final List<Course> courseList;
     private final MainActivity mainActivity;
+    private DatabaseReference databaseReference;
 
     public CourseAdapter(MainActivity mainActivity, List<Course> courseList) {
         this.mainActivity = mainActivity;
         this.courseList = courseList;
+        // Initialize Firebase database reference
+        this.databaseReference = FirebaseDatabase.getInstance("https://course-work-comp1786-f7483-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("courses");
     }
 
     @NonNull
@@ -57,8 +64,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         });
 
         holder.buttonDelete.setOnClickListener(v -> {
-            Toast.makeText(v.getContext(), "Delete clicked for " + course.getClassType(), Toast.LENGTH_SHORT).show();
-            // Handle Delete functionality
+            showDeleteConfirmationDialog(course);
         });
 
         holder.buttonCheckClass.setOnClickListener(v -> {
@@ -69,6 +75,27 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             checkClassesFragment.setArguments(args);
             mainActivity.replaceFragment(checkClassesFragment);
         });
+    }
+
+    private void showDeleteConfirmationDialog(Course course) {
+        new AlertDialog.Builder(mainActivity)
+                .setTitle("Delete Course")
+                .setMessage("Are you sure you want to delete this course?")
+                .setPositiveButton("Yes", (dialog, which) -> deleteCourse(course))
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void deleteCourse(Course course) {
+        databaseReference.child(course.getId()).removeValue()
+                .addOnSuccessListener(aVoid -> {
+                    courseList.remove(course);
+                    notifyDataSetChanged();
+                    Toast.makeText(mainActivity, "Course deleted successfully", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(mainActivity, "Failed to delete course: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 
     @Override
