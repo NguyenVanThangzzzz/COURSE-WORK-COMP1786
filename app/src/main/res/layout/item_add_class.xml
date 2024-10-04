@@ -34,13 +34,16 @@
             android:textSize="14sp"
             android:layout_marginTop="4dp" />
 
-        <Button
+        <ImageButton
             android:id="@+id/buttonDeleteClass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete"
+            android:src="@drawable/baseline_delete_24"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
             android:layout_marginTop="8dp"
-            android:layout_gravity="end" />
+            android:layout_gravity="end"
+            android:contentDescription="Delete class" />
 
     </LinearLayout>
 

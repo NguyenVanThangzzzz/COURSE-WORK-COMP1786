@@ -1,9 +1,11 @@
 package com.example.courseworkcomp1786;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +15,7 @@ public class AddClassAdapter extends RecyclerView.Adapter<AddClassAdapter.AddCla
 
     private List<AddClass> classList;
     private OnDeleteClickListener deleteClickListener;
+    private Context context;
 
     public interface OnDeleteClickListener {
         void onDeleteClick(int position);
@@ -26,7 +29,8 @@ public class AddClassAdapter extends RecyclerView.Adapter<AddClassAdapter.AddCla
     @NonNull
     @Override
     public AddClassViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_add_class, parent, false);
+        context = parent.getContext();
+        View view = LayoutInflater.from(context).inflate(R.layout.item_add_class, parent, false);
         return new AddClassViewHolder(view, deleteClickListener);
     }
 
@@ -45,7 +49,7 @@ public class AddClassAdapter extends RecyclerView.Adapter<AddClassAdapter.AddCla
         private final TextView textViewTeacher;
         private final TextView textViewDate;
         private final TextView textViewComments;
-        private final Button buttonDeleteClass;
+        private final ImageButton buttonDeleteClass;
 
         public AddClassViewHolder(@NonNull View itemView, final OnDeleteClickListener listener) {
             super(itemView);
@@ -57,9 +61,18 @@ public class AddClassAdapter extends RecyclerView.Adapter<AddClassAdapter.AddCla
             buttonDeleteClass.setOnClickListener(v -> {
                 int position = getBindingAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
-                    listener.onDeleteClick(position);
+                    showDeleteConfirmationDialog(v.getContext(), position, listener);
                 }
             });
+        }
+
+        private void showDeleteConfirmationDialog(Context context, int position, OnDeleteClickListener listener) {
+            new AlertDialog.Builder(context)
+                .setTitle("Xác nhận xóa")
+                .setMessage("Bạn có chắc chắn muốn xóa lớp học này?")
+                .setPositiveButton("Có", (dialog, which) -> listener.onDeleteClick(position))
+                .setNegativeButton("Không", null)
+                .show();
         }
 
         public void bind(AddClass addClass) {

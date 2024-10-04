@@ -76,8 +76,8 @@ public class AddClassFragment extends Fragment {
         String comments = editTextComments.getText().toString().trim();
 
         // Kiểm tra các trường thông tin
-        if (teacher.isEmpty() || date.isEmpty() || comments.isEmpty()) {
-            Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+        if (teacher.isEmpty() || date.isEmpty() || comments.isEmpty() || date.equals("Click here to select the day of the week")) {
+            Toast.makeText(getContext(), "Please fill in all fields and select a date", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -105,9 +105,17 @@ public class AddClassFragment extends Fragment {
             if (task.isSuccessful()) {
                 Toast.makeText(getContext(), "Class added successfully", Toast.LENGTH_SHORT).show();
                 // Optionally, navigate back to the previous fragment or clear input fields
+                clearInputFields();
             } else {
                 Toast.makeText(getContext(), "Failed to add class", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    // Add this new method to clear input fields after successful addition
+    private void clearInputFields() {
+        editTextTeacher.setText("");
+        editTextDate.setText("Click here to select the day of the week");
+        editTextComments.setText("");
     }
 }
