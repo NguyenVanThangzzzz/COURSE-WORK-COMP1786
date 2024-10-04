@@ -1,107 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <!-- Day of Week Selection -->
-    <TextView
-        android:id="@+id/dob_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Day of Week"
-        android:layout_marginTop="16dp" />
-
-    <TextView
-        android:id="@+id/dob_control"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Click here to select the day of the week"
-        android:textColor="@android:color/holo_blue_dark"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_marginTop="8dp" />
-
-    <!-- Time of Course Selection -->
-    <TextView
-        android:id="@+id/textViewTimeOfCourse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Time of Course"
-        android:layout_marginTop="16dp" />
-
-    <TextView
-        android:id="@+id/time_control"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Click here to select time"
-        android:textColor="@android:color/holo_blue_dark"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_marginTop="8dp" />
-
-    <EditText
-        android:id="@+id/editTextCapacity"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Số lượng"/>
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <EditText
-        android:id="@+id/editTextDuration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Thời gian"/>
-
-    <EditText
-        android:id="@+id/editTextPricePerClass"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Giá mỗi lớp"/>
-
-    <EditText
-        android:id="@+id/editTextDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Mô tả"/>
-
-    <RadioGroup
-        android:id="@+id/radioGroupClassType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
-
-        <RadioButton
-            android:id="@+id/radioFlowYoga"
+        <!-- Header -->
+        <TextView
+            android:id="@+id/textViewHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Flow Yoga" />
+            android:text="Edit Course"
+            android:textSize="30sp"
+            android:layout_marginBottom="24dp" />
 
-        <RadioButton
-            android:id="@+id/radioAerialYoga"
+        <!-- Day of Week Selection -->
+        <TextView
+            android:id="@+id/dob_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Aerial Yoga" />
+            android:text="Day of Week"
+            android:layout_marginBottom="8dp" />
 
-        <RadioButton
-            android:id="@+id/radioFamilyYoga"
+        <TextView
+            android:id="@+id/dob_control"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Family Yoga" />
-    </RadioGroup>
+            android:text="Click here to select the day of the week"
+            android:textColor="@android:color/holo_blue_dark"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginBottom="16dp" />
 
-    <Button
-        android:id="@+id/save_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Submit"/>
+        <!-- Time of Course Selection -->
+        <TextView
+            android:id="@+id/textViewTimeOfCourse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time of Course"
+            android:layout_marginBottom="8dp" />
 
-    <Button
-        android:id="@+id/back_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        android:layout_marginTop="8dp"/>
+        <TextView
+            android:id="@+id/time_control"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Click here to select time"
+            android:textColor="@android:color/holo_blue_dark"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginBottom="16dp" />
 
-</LinearLayout>
+        <!-- Capacity -->
+        <TextView
+            android:id="@+id/textViewCapacity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Capacity"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/editTextCapacity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Capacity"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Duration -->
+        <TextView
+            android:id="@+id/textViewDuration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Duration"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/editTextDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Duration"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Price per Class -->
+        <TextView
+            android:id="@+id/textViewPricePerClass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price per Class"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/editTextPricePerClass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Price per Class"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Type of Class -->
+        <TextView
+            android:id="@+id/textViewTypeOfClass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Type of Class"
+            android:layout_marginBottom="8dp" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupClassType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <RadioButton
+                android:id="@+id/radioFlowYoga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Flow Yoga" />
+
+            <RadioButton
+                android:id="@+id/radioAerialYoga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Aerial Yoga" />
+
+            <RadioButton
+                android:id="@+id/radioFamilyYoga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Family Yoga" />
+        </RadioGroup>
+
+        <!-- Description Field -->
+        <TextView
+            android:id="@+id/textViewDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/editTextDescription"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:gravity="top"
+            android:hint="Enter Description"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Buttons -->
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back"/>
+
+    </LinearLayout>
+</ScrollView>
