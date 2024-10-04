@@ -2,6 +2,8 @@ package com.example.courseworkcomp1786;
 
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -35,6 +36,9 @@ public class AddFragment extends Fragment {
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+
+    private boolean isDateSelected = false;
+    private boolean isTimeSelected = false;
 
     public AddFragment() {
         // Required empty public constructor
@@ -65,13 +69,13 @@ public class AddFragment extends Fragment {
         firebaseDatabase = FirebaseDatabase.getInstance("https://course-work-comp1786-f7483-default-rtdb.asia-southeast1.firebasedatabase.app/");
         databaseReference = firebaseDatabase.getReference("courses"); // Đường dẫn tới "courses"
 
-        // Sự kiện click cho dobControl
+        // Sửa đổi sự kiện click cho dobControl
         dobControl.setOnClickListener(v -> {
             DialogFragment datePicker = new DatePickerFragment(dobControl);
             datePicker.show(getParentFragmentManager(), "datePicker");
         });
 
-        // Sự kiện click cho timeControl
+        // Sửa đổi sự kiện click cho timeControl
         timeControl.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -80,14 +84,41 @@ public class AddFragment extends Fragment {
             TimePickerDialog timePicker = new TimePickerDialog(getContext(),
                     (view1, hourOfDay, minuteOfHour) -> {
                         timeControl.setText(String.format("%02d:%02d", hourOfDay, minuteOfHour));
+                        isTimeSelected = true;
+                        updateAddButtonState();
                     }, hour, minute, true);
             timePicker.show();
         });
+
+        // Thêm TextWatcher cho dobControl
+        dobControl.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                isDateSelected = !s.toString().trim().equals("Click here to select the day of the week");
+                updateAddButtonState();
+            }
+        });
+
+        // Bỏ TextWatcher cho timeControl vì chúng ta đã xử lý trong sự kiện click
+
+        // Disable nút Add ban đầu
+        addButton.setEnabled(false);
 
         // Sự kiện click cho nút Add
         addButton.setOnClickListener(v -> addNewCourse());
 
         return view;
+    }
+
+    // Cập nhật phương thức này
+    private void updateAddButtonState() {
+        addButton.setEnabled(isDateSelected && isTimeSelected);
     }
 
     private void addNewCourse() {
@@ -104,9 +135,14 @@ public class AddFragment extends Fragment {
         RadioButton selectedRadioButton = getView().findViewById(selectedTypeId);
         String classType = selectedRadioButton != null ? selectedRadioButton.getText().toString() : "";
 
-        // Kiểm tra nếu một số trường còn trống
-        if (dayOfWeek.isEmpty() || timeOfCourse.isEmpty() || capacity.isEmpty() || duration.isEmpty() || pricePerClass.isEmpty() || description.isEmpty() || classType.isEmpty()) {
-            Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+        // Update this part of the validation
+        if (dayOfWeek.isEmpty() || timeOfCourse.isEmpty()) {
+            Toast.makeText(getContext(), "Please select both day and time", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (capacity.isEmpty() || duration.isEmpty() || pricePerClass.isEmpty() || description.isEmpty() || classType.isEmpty()) {
+            Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
