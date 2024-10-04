@@ -16,6 +16,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -110,7 +111,21 @@ public class CheckClassesFragment extends Fragment implements AddClassAdapter.On
         searchHistory = new ArrayList<>(Arrays.asList(sharedPreferences.getString("search_history", "").split(",")));
         searchHistory.removeAll(Arrays.asList("", null));
 
-        searchHistoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, searchHistory);
+        searchHistoryAdapter = new ArrayAdapter<String>(getContext(), R.layout.search_history_item, R.id.searchHistoryText, searchHistory) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                ImageView deleteButton = view.findViewById(R.id.deleteHistoryItem);
+                deleteButton.setOnClickListener(v -> {
+                    String itemToRemove = searchHistory.get(position);
+                    searchHistory.remove(itemToRemove);
+                    notifyDataSetChanged();
+                    saveSearchHistory();
+                });
+                return view;
+            }
+        };
         searchHistoryListView.setAdapter(searchHistoryAdapter);
 
         searchHistoryListView.setOnItemClickListener((parent, view, position, id) -> {
