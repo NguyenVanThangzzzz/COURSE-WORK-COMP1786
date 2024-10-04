@@ -14,8 +14,7 @@
         android:layout_height="wrap_content"
         android:background="@android:drawable/editbox_background"
         app:iconifiedByDefault="false"
-        app:queryHint="Search courses..."
-        app:searchIcon="@drawable/baseline_search_24" />
+        app:queryHint="Search by class type or day of week" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSearchResults"

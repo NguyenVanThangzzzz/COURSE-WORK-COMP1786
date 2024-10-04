@@ -33,28 +33,41 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:background="@android:color/white"
         android:elevation="2dp"
         android:padding="8dp"
         android:layout_marginBottom="16dp">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/baseline_search_24"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="Search icon" />
-
-        <EditText
-            android:id="@+id/searchEditText"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="Search classes"
-            android:inputType="text"
-            android:imeOptions="actionSearch" />
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/baseline_search_24"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="Search icon" />
+
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="Search classes"
+                android:inputType="text"
+                android:imeOptions="actionSearch" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/searchHistoryListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
     </LinearLayout>
 

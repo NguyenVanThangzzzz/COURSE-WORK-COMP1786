@@ -1,10 +1,16 @@
 package com.example.courseworkcomp1786;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CheckClassesFragment extends Fragment implements AddClassAdapter.OnDeleteClickListener {
@@ -22,10 +29,14 @@ public class CheckClassesFragment extends Fragment implements AddClassAdapter.On
     private RecyclerView recyclerView;
     private AddClassAdapter adapter;
     private List<AddClass> classList;
+    private List<AddClass> allClassList; // Add this line
     private String courseId;
     private DatabaseReference courseRef;
     private EditText searchEditText;
-    private List<AddClass> allClassList;
+    private ListView searchHistoryListView;
+    private ArrayAdapter<String> searchHistoryAdapter;
+    private List<String> searchHistory;
+    private SharedPreferences sharedPreferences;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,7 +57,9 @@ public class CheckClassesFragment extends Fragment implements AddClassAdapter.On
         backButton.setOnClickListener(v -> navigateToHome());
 
         searchEditText = view.findViewById(R.id.searchEditText);
+        searchHistoryListView = view.findViewById(R.id.searchHistoryListView);
         setupSearchListener();
+        setupSearchHistory();
 
         return view;
     }
@@ -62,13 +75,75 @@ public class CheckClassesFragment extends Fragment implements AddClassAdapter.On
             @Override
             public void afterTextChanged(Editable s) {
                 filterClasses(s.toString());
+                if (s.length() == 0) {
+                    searchHistoryListView.setVisibility(View.VISIBLE);
+                } else {
+                    searchHistoryListView.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        searchEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                String query = searchEditText.getText().toString().trim();
+                if (!query.isEmpty()) {
+                    addToSearchHistory(query);
+                    filterClasses(query);
+                }
+                return true;
+            }
+            return false;
+        });
+
+        searchEditText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus && searchEditText.getText().length() == 0) {
+                searchHistoryListView.setVisibility(View.VISIBLE);
+            } else {
+                searchHistoryListView.setVisibility(View.GONE);
             }
         });
     }
 
+    private void setupSearchHistory() {
+        sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        searchHistory = new ArrayList<>(Arrays.asList(sharedPreferences.getString("search_history", "").split(",")));
+        searchHistory.removeAll(Arrays.asList("", null));
+
+        searchHistoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, searchHistory);
+        searchHistoryListView.setAdapter(searchHistoryAdapter);
+
+        searchHistoryListView.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedItem = searchHistory.get(position);
+            searchEditText.setText(selectedItem);
+            searchEditText.setSelection(selectedItem.length());
+            filterClasses(selectedItem);
+            searchHistoryListView.setVisibility(View.GONE);
+        });
+    }
+
+    private void addToSearchHistory(String query) {
+        if (!query.isEmpty() && !searchHistory.contains(query)) {
+            searchHistory.add(0, query);
+            if (searchHistory.size() > 3) {
+                searchHistory.remove(searchHistory.size() - 1);
+            }
+            searchHistoryAdapter.notifyDataSetChanged();
+            saveSearchHistory();
+        }
+    }
+
     private void filterClasses(String query) {
-        List<AddClass> filteredList = SearchClass.searchClasses(allClassList, query);
-        adapter.updateList(filteredList);
+        if (allClassList != null) {
+            List<AddClass> filteredList = SearchClass.searchClasses(allClassList, query);
+            adapter.updateList(filteredList);
+        }
+    }
+
+    private void saveSearchHistory() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("search_history", String.join(",", searchHistory));
+        editor.apply();
     }
 
     private void loadClasses(String courseId) {
