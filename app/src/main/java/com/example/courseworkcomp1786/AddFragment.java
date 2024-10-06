@@ -153,12 +153,28 @@ public class AddFragment extends Fragment {
         Course newCourse = new Course(courseId, dayOfWeek, timeOfCourse, capacity, duration, pricePerClass, classType, description);
 
         // Thêm khóa học vào Firebase Realtime Database
-        databaseReference.child(courseId).setValue(newCourse) // Sử dụng ID tạo được để lưu khóa học
+        databaseReference.child(courseId).setValue(newCourse)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "Khóa học đã được thêm thành công!", Toast.LENGTH_SHORT).show();
-
+                    clearInputFields(); // Add this line to clear input fields
                 })
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Không thể thêm khóa học: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+    }
+
+    // Add this new method to clear all input fields
+    private void clearInputFields() {
+        dobControl.setText("Click here to select the day of the week");
+        timeControl.setText("Click here to select time");
+        editTextCapacity.setText("");
+        editTextDuration.setText("");
+        editTextPricePerClass.setText("");
+        editTextDescription.setText("");
+        radioGroupClassType.clearCheck();
+        
+        // Reset the flags and update button state
+        isDateSelected = false;
+        isTimeSelected = false;
+        updateAddButtonState();
     }
 
 }
