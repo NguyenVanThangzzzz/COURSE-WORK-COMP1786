@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CheckClassesFragment extends Fragment implements AddClassAdapter.OnDeleteClickListener {
+public class CheckClassesFragment extends Fragment implements AddClassAdapter.OnDeleteClickListener, AddClassAdapter.OnItemClickListener {
 
     private RecyclerView recyclerView;
     private AddClassAdapter adapter;
@@ -46,7 +46,7 @@ public class CheckClassesFragment extends Fragment implements AddClassAdapter.On
         recyclerView = view.findViewById(R.id.recyclerViewClasses);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         classList = new ArrayList<>();
-        adapter = new AddClassAdapter(classList, this);
+        adapter = new AddClassAdapter(classList, this, this);
         recyclerView.setAdapter(adapter);
 
         if (getArguments() != null) {
@@ -205,6 +205,15 @@ public class CheckClassesFragment extends Fragment implements AddClassAdapter.On
                     Toast.makeText(getContext(), "Failed to delete class", Toast.LENGTH_SHORT).show();
                 }
             });
+        }
+    }
+
+    @Override
+    public void onItemClick(AddClass addClass) {
+        // Mở fragment chỉnh sửa lớp học
+        EditClassFragment editClassFragment = EditClassFragment.newInstance(courseId, addClass.getId());
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).replaceFragment(editClassFragment);
         }
     }
 

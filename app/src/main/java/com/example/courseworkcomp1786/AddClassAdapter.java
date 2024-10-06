@@ -15,15 +15,21 @@ public class AddClassAdapter extends RecyclerView.Adapter<AddClassAdapter.AddCla
 
     private List<AddClass> classList;
     private OnDeleteClickListener deleteClickListener;
+    private OnItemClickListener itemClickListener;
     private Context context;
 
     public interface OnDeleteClickListener {
         void onDeleteClick(int position);
     }
 
-    public AddClassAdapter(List<AddClass> classList, OnDeleteClickListener listener) {
+    public interface OnItemClickListener {
+        void onItemClick(AddClass addClass);
+    }
+
+    public AddClassAdapter(List<AddClass> classList, OnDeleteClickListener deleteListener, OnItemClickListener itemListener) {
         this.classList = classList;
-        this.deleteClickListener = listener;
+        this.deleteClickListener = deleteListener;
+        this.itemClickListener = itemListener;
     }
 
     @NonNull
@@ -31,7 +37,7 @@ public class AddClassAdapter extends RecyclerView.Adapter<AddClassAdapter.AddCla
     public AddClassViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.item_add_class, parent, false);
-        return new AddClassViewHolder(view, deleteClickListener);
+        return new AddClassViewHolder(view);
     }
 
     @Override
@@ -45,13 +51,13 @@ public class AddClassAdapter extends RecyclerView.Adapter<AddClassAdapter.AddCla
         return classList.size();
     }
 
-    static class AddClassViewHolder extends RecyclerView.ViewHolder {
+    class AddClassViewHolder extends RecyclerView.ViewHolder {
         private final TextView textViewTeacher;
         private final TextView textViewDate;
         private final TextView textViewComments;
         private final ImageButton buttonDeleteClass;
 
-        public AddClassViewHolder(@NonNull View itemView, final OnDeleteClickListener listener) {
+        public AddClassViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewTeacher = itemView.findViewById(R.id.textViewTeacher);
             textViewDate = itemView.findViewById(R.id.textViewDate);
@@ -60,17 +66,24 @@ public class AddClassAdapter extends RecyclerView.Adapter<AddClassAdapter.AddCla
 
             buttonDeleteClass.setOnClickListener(v -> {
                 int position = getBindingAdapterPosition();
-                if (position != RecyclerView.NO_POSITION && listener != null) {
-                    showDeleteConfirmationDialog(v.getContext(), position, listener);
+                if (position != RecyclerView.NO_POSITION && deleteClickListener != null) {
+                    showDeleteConfirmationDialog(v.getContext(), position);
+                }
+            });
+
+            itemView.setOnClickListener(v -> {
+                int position = getBindingAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && itemClickListener != null) {
+                    itemClickListener.onItemClick(classList.get(position));
                 }
             });
         }
 
-        private void showDeleteConfirmationDialog(Context context, int position, OnDeleteClickListener listener) {
+        private void showDeleteConfirmationDialog(Context context, int position) {
             new AlertDialog.Builder(context)
                 .setTitle("Xác nhận xóa")
                 .setMessage("Bạn có chắc chắn muốn xóa lớp học này?")
-                .setPositiveButton("Có", (dialog, which) -> listener.onDeleteClick(position))
+                .setPositiveButton("Có", (dialog, which) -> deleteClickListener.onDeleteClick(position))
                 .setNegativeButton("Không", null)
                 .show();
         }
